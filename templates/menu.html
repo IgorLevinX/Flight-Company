@@ -148,6 +148,55 @@
         </div>
     </form>
     <hr>
+    <h4>Get Countries</h4>
+    <form action="" id="get-countries-form" method="GET" onsubmit="return false">
+        <div>
+            <label>Get all countries</label>
+            <input type="submit" onclick="formRequest('Countries','','get-countries-form','GET')" value="Get">
+        </div>
+    </form>
+    <form action="" method="GET" id="get-countries-id-form" onsubmit="return false">
+        <div>
+            <label>Get user by ID</label>
+            <input type="number" id="get-countries-id" required>
+            <input type="submit" onclick="formRequest('Countries','get-countries-id','get-countries-id-form','GET')" value="Get">
+        </div>
+    </form>
+    {% if show_countries_table != null %}
+       <table style="margin-left: auto; margin-right: auto;">
+            {% if countries != null %}
+            <tr>
+                <th>Country ID</th>
+                <th>Name</th>
+            </tr>
+            {% endif %}
+            {% for country in countries %}
+            <tr>
+                <td>{{ country.code_ai }}</td>
+                <td>{{ country.name }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+    <hr>
+    <h4>Add Countries</h4>
+    <form action="" method="POST" id="post-country-id-form" onsubmit="return false">
+        <div>
+            <label>Origin Country</label>
+            <input type="text" name="country_name" required>
+        </div>
+        <input type="submit" name="add_country" value="Add Country" id="submit_post" onclick="formRequest('Countries','post','post-country-id-form','POST')">
+    </form>
+    <hr>
+    <h4>Delete Countries</h4>
+    <form action="" method="DELETE" id="delete-user-id-form" onsubmit="return false">
+        <div>
+            <label>Delete Flight by ID</label>
+            <input type="number" id="delete-user-id" required>
+            <input type="submit" onclick="formRequest('Users','delete-user-id','delete-user-id-form','DELETE')" value="Delete">
+        </div>
+    </form>
+    <hr>
     <h4>Get Users</h4>
     <form action="" id="get-users-form" method="GET" onsubmit="return false">
         <div>
@@ -215,56 +264,7 @@
         </div>
     </form>
     <hr>
-    <h4>Get Countries</h4>
-    <form action="" id="get-countries-form" method="GET" onsubmit="return false">
-        <div>
-            <label>Get all countries</label>
-            <input type="submit" onclick="formRequest('Countries','','get-countries-form','GET')" value="Get">
-        </div>
-    </form>
-    <form action="" method="GET" id="get-countries-id-form" onsubmit="return false">
-        <div>
-            <label>Get user by ID</label>
-            <input type="number" id="get-countries-id" required>
-            <input type="submit" onclick="formRequest('Countries','get-countries-id','get-countries-id-form','GET')" value="Get">
-        </div>
-    </form>
-    {% if show_countries_table != null %}
-       <table style="margin-left: auto; margin-right: auto;">
-            {% if countries != null %}
-            <tr>
-                <th>Country ID</th>
-                <th>Name</th>
-            </tr>
-            {% endif %}
-            {% for country in countries %}
-            <tr>
-                <td>{{ country.code_ai }}</td>
-                <td>{{ country.name }}</td>
-            </tr>
-            {% endfor %}
-        </table>
     {% endif %}
-    <hr>
-    <h4>Add Countries</h4>
-    <form action="" method="POST" id="post-country-id-form" onsubmit="return false">
-        <div>
-            <label>Origin Country</label>
-            <input type="text" name="country_name" required>
-        </div>
-        <input type="submit" name="add_country" value="Add Country" id="submit_post" onclick="formRequest('Countries','post','post-country-id-form','POST')">
-    </form>
-    <hr>
-    <h4>Delete Countries</h4>
-    <form action="" method="DELETE" id="delete-user-id-form" onsubmit="return false">
-        <div>
-            <label>Delete Flight by ID</label>
-            <input type="number" id="delete-user-id" required>
-            <input type="submit" onclick="formRequest('Users','delete-user-id','delete-user-id-form','DELETE')" value="Delete">
-        </div>
-    </form>
-    <hr>
-{% endif %}
      <form action="" method="POST">
         <div>
             <label>Logout Session</label>
@@ -274,16 +274,26 @@
     <hr>
 
     <script>
+        // function to for getting different requests types (GET, POST, PUT, DELETE) and sending them to the flask server
         function formRequest(funcURL,inputText,formURL,methodAction) {
+            // Getting form by id
             var formSubmit = document.getElementById(formURL)
+            // Getting the html body of the page
             var htmlBody = document.getElementsByTagName('body')[0]
+            // Checking if the request is not a GET request with paramenters otherwise entering the condition
             if (inputText != "") {
+                // Condition to check if the request is not a POST request if so get the value
                 var redirectURL = (inputText != 'post') ? document.getElementById(inputText).value : null
                 var jsonObject = {}
+                // Creating FormData variable object
                 var formData = new FormData(formSubmit)
+                // Using the FormData variable object to loop over all the input labels with data
                 formData.forEach((value, key) => jsonObject[key] = value)
+                // Creating dictionary variable with options for the request that will be sent 
                 var options = {method: methodAction, headers:{"Content-Type": "application/json"}}
+                // Conditon to check if the request is not a GET request mthod if so add a json object with the data from input lables 
                 var options = (methodAction != 'GET') ? Object.assign({}, options, {body: JSON.stringify(jsonObject)}) : options
+                // If request is not a POST request send to the flask server with a url redirection parameter
                 if (inputText != 'post') {
                     fetch(`${window.origin}/${funcURL}/${redirectURL}`, options)
                     .then(res => res.text())
@@ -293,6 +303,7 @@
                     .then(res => res.text())
                     .then(html => htmlBody.innerHTML = html)
                 }
+            // Sending the GET request to the flask server
             } else {
                 fetch(`${window.origin}/${funcURL}`)
                 .then(res => res.text())

@@ -157,7 +157,7 @@ def get_tickets():
                     cursor.execute('SELECT * FROM tickets')
                 else:
                     # SELECT statement for getting the tickets of the logged on user only
-                    cursor.execute('SELECT * FROM tickets WHERE user_id = %(user_id)s', {'user_id': session['real_id']})
+                    cursor.execute('SELECT * FROM tickets WHERE user_id = %(user_id)s', {'user_id': session['user_id']})
                 tickets = cursor.fetchall()
                 if tickets:
                     # If there are tickets show them
@@ -546,6 +546,124 @@ def delete_flights(id):
 
     return render_template('menu.html', show_flight_table=None)
 
+# Route and function for the GET requests for finding all countries or country by id
+@app.route('/Countries', defaults={'id': None}, methods=['GET'])
+@app.route('/Countries/<int:id>', methods=['GET'])
+def get_countries(id=None):
+    show_countries_table = None
+
+    # If GET request by id was sent
+    if id is not None:
+        try:
+            # Connecting to postgresql database using connection data variable
+            with psycopg2.connect(**connection_data) as connection:
+                with connection.cursor(cursor_factory = DictCursor) as cursor:
+                    # SELECT statement for getting a country by country code_ai
+                    cursor.execute('SELECT * FROM countries WHERE code_ai = %(id)s', {'id': id})
+                    countries = cursor.fetchall()
+                    # If country found show it
+                    if countries:
+                        write_log.info(f'User {session["real_id"]} queried to get country by id {id}')
+                        show_countries_table = True
+                    else:
+                        flash(f'No country with id {id} was found')
+        
+        # Catching the exception of when the connection to the database is lost and then logging of the user and redirecting to the home page
+        except psycopg2.OperationalError:
+            flash("Logged out, could not connect to server")
+            return render_template('home.html')
+
+    else:
+        try:
+            # Connecting to postgresql database using connection data variable
+            with psycopg2.connect(**connection_data) as connection:
+                with connection.cursor(cursor_factory = DictCursor) as cursor:
+                    # SELECT statement for getting all countries
+                    cursor.execute('SELECT * FROM countries')
+                    countries = cursor.fetchall()
+                    # If countries found show them
+                    if countries:
+                        write_log.info(f'User {session["real_id"]} queried to get all countries')
+                        show_countries_table = True
+                    else:
+                        flash(f'No countries are avaliable')
+        
+        # Catching the exception of when the connection to the database is lost and then logging of the user and redirecting to the home page
+        except psycopg2.OperationalError as exception:
+            write_log.error(f'Error: could not connect to database: {exception}')
+            logout()
+            return render_template('home.html')
+
+    return render_template('menu.html', show_countries_table=show_countries_table, countries=countries)
+
+# Route and function for the POST request for adding countries
+@app.route('/Countries', methods=['POST'])
+def add_countries():
+    request_json = request.get_json()
+    country_name = request_json['country_name']
+
+    try:
+        # Connecting to postgresql database using connection data variable
+        with psycopg2.connect(**connection_data) as connection:
+            with connection.cursor(cursor_factory = DictCursor) as cursor:
+                try:
+                    # INSERT statement for adding a country to the countries table in the database
+                    cursor.execute('INSERT INTO countries (name) VALUES (%(country_name)s) RETURNING code_ai', {'country_name': country_name})
+                    connection.commit()
+                
+                except psycopg2.errors.UniqueViolation:
+                    # Exception if the user tried to add a country that already in the database
+                    write_log.error(f'User {session["real_id"]} failed to add new country')
+                    flash(f"Country with name {country_name} already exist")
+                else:
+                    write_log.info(f'User {session["real_id"]} added new country {cursor.fetchone()[0]} successfully')
+                    flash(f'Country {country_name} has been added')
+                    return redirect(url_for('menu'))
+
+    # Catching the exception of when the connection to the database is lost and then logging of the user and redirecting to the home page
+    except psycopg2.OperationalError as exception:
+            write_log.error(f'Error: could not connect to database: {exception}')
+            logout()
+            return render_template('home.html')
+
+    return render_template('menu.html', show_countries_table=None)
+
+# Route and function for the DELETE request for deleting countries by id
+@app.route('/Countries/<int:id>', methods=['DELETE'])
+def delete_countries(id):
+    try:
+        # Connecting to postgresql database using connection data variable
+        with psycopg2.connect(**connection_data) as connection:
+            with connection.cursor(cursor_factory = DictCursor) as cursor:
+                # SELECT statement for getting flight by country code_ai
+                cursor.execute('SELECT * FROM countries WHERE code_ai = %(id)s', {'id': id})
+                country = cursor.fetchone()
+                if country:
+                    # DELETE statement for deleting a country by its ntry code_ai
+                    cursor.execute('DELETE FROM countries WHERE code_ai = %(id)s', {'id': id})
+                    connection.commit()
+
+                    # SELECT statement for finding country by country code_ai
+                    cursor.execute('SELECT * FROM countries WHERE code_ai = %(id)s', {'id': id})
+                    check_country = cursor.fetchone()
+                    # Checking if the country not found becuase it was deleted
+                    if not check_country:
+                        write_log.info(f'User {session["real_id"]} deleted country {id} successfully')
+                        flash(f'Country {id} was deleted')
+                    else:
+                        write_log.error(f'User {session["real_id"]} failed to delete country {id}')
+                        flash(f'Failed to delete country {id}')
+                else:
+                    flash(f'No country with id {id} was found')
+    
+    # Catching the exception of when the connection to the database is lost and then logging of the user and redirecting to the home page
+    except psycopg2.OperationalError as exception:
+            write_log.error(f'Error: could not connect to database: {exception}')
+            logout()
+            return render_template('home.html')
+            
+    return render_template('menu.html', show_user_table=None)
+
 # Route and function for the GET requests for finding all users or user by id
 @app.route('/Users', defaults={'id': None}, methods=['GET'])
 @app.route('/Users/<int:id>', methods=['GET'])
@@ -723,123 +841,6 @@ def delete_users(id):
         
     return render_template('menu.html', show_user_table=None)
 
-# Route and function for the GET requests for finding all countries or country by id
-@app.route('/Countries', defaults={'id': None}, methods=['GET'])
-@app.route('/Countries/<int:id>', methods=['GET'])
-def get_countries(id=None):
-    show_countries_table = None
-
-    # If GET request by id was sent
-    if id is not None:
-        try:
-            # Connecting to postgresql database using connection data variable
-            with psycopg2.connect(**connection_data) as connection:
-                with connection.cursor(cursor_factory = DictCursor) as cursor:
-                    # SELECT statement for getting a country by country code_ai
-                    cursor.execute('SELECT * FROM countries WHERE code_ai = %(id)s', {'id': id})
-                    countries = cursor.fetchall()
-                    # If country found show it
-                    if countries:
-                        write_log.info(f'User {session["real_id"]} queried to get country by id {id}')
-                        show_countries_table = True
-                    else:
-                        flash(f'No country with id {id} was found')
-        
-        # Catching the exception of when the connection to the database is lost and then logging of the user and redirecting to the home page
-        except psycopg2.OperationalError:
-            flash("Logged out, could not connect to server")
-            return render_template('home.html')
-
-    else:
-        try:
-            # Connecting to postgresql database using connection data variable
-            with psycopg2.connect(**connection_data) as connection:
-                with connection.cursor(cursor_factory = DictCursor) as cursor:
-                    # SELECT statement for getting all countries
-                    cursor.execute('SELECT * FROM countries')
-                    countries = cursor.fetchall()
-                    # If countries found show them
-                    if countries:
-                        write_log.info(f'User {session["real_id"]} queried to get all countries')
-                        show_countries_table = True
-                    else:
-                        flash(f'No countries are avaliable')
-        
-        # Catching the exception of when the connection to the database is lost and then logging of the user and redirecting to the home page
-        except psycopg2.OperationalError as exception:
-            write_log.error(f'Error: could not connect to database: {exception}')
-            logout()
-            return render_template('home.html')
-
-    return render_template('menu.html', show_countries_table=show_countries_table, countries=countries)
-
-# Route and function for the POST request for adding countries
-@app.route('/Countries', methods=['POST'])
-def add_countries():
-    request_json = request.get_json()
-    country_name = request_json['country_name']
-
-    try:
-        # Connecting to postgresql database using connection data variable
-        with psycopg2.connect(**connection_data) as connection:
-            with connection.cursor(cursor_factory = DictCursor) as cursor:
-                try:
-                    # INSERT statement for adding a country to the countries table in the database
-                    cursor.execute('INSERT INTO countries (name) VALUES (%(country_name)s) RETURNING code_ai', {'country_name': country_name})
-                    connection.commit()
-                
-                except psycopg2.errors.UniqueViolation:
-                    # Exception if the user tried to add a country that already in the database
-                    write_log.error(f'User {session["real_id"]} failed to add new country')
-                    flash(f"Country with name {country_name} already exist")
-                else:
-                    write_log.info(f'User {session["real_id"]} added new country {cursor.fetchone()[0]} successfully')
-                    flash(f'Country {country_name} has been added')
-                    return redirect(url_for('menu'))
-
-    # Catching the exception of when the connection to the database is lost and then logging of the user and redirecting to the home page
-    except psycopg2.OperationalError as exception:
-            write_log.error(f'Error: could not connect to database: {exception}')
-            logout()
-            return render_template('home.html')
-
-    return render_template('menu.html', show_countries_table=None)
-
-# Route and function for the DELETE request for deleting countries by id
-@app.route('/Countries/<int:id>', methods=['DELETE'])
-def delete_countries(id):
-    try:
-        # Connecting to postgresql database using connection data variable
-        with psycopg2.connect(**connection_data) as connection:
-            with connection.cursor(cursor_factory = DictCursor) as cursor:
-                # SELECT statement for getting flight by country code_ai
-                cursor.execute('SELECT * FROM countries WHERE code_ai = %(id)s', {'id': id})
-                country = cursor.fetchone()
-                if country:
-                    # DELETE statement for deleting a country by its ntry code_ai
-                    cursor.execute('DELETE FROM countries WHERE code_ai = %(id)s', {'id': id})
-                    connection.commit()
-
-                    # SELECT statement for finding country by country code_ai
-                    cursor.execute('SELECT * FROM countries WHERE code_ai = %(id)s', {'id': id})
-                    check_country = cursor.fetchone()
-                    # Checking if the country not found becuase it was deleted
-                    if not check_country:
-                        write_log.info(f'User {session["real_id"]} deleted country {id} successfully')
-                        flash(f'Country {id} was deleted')
-                    else:
-                        write_log.error(f'User {session["real_id"]} failed to delete country {id}')
-                        flash(f'Failed to delete country {id}')
-                else:
-                    flash(f'No country with id {id} was found')
-    
-    # Catching the exception of when the connection to the database is lost and then logging of the user and redirecting to the home page
-    except psycopg2.OperationalError as exception:
-            write_log.error(f'Error: could not connect to database: {exception}')
-            logout()
-            return render_template('home.html')
-            
-    return render_template('menu.html', show_user_table=None)
 
 # Checking if the program runs from the main file as the main function
 if __name__ == '__main__':
