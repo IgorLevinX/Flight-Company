@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+{% block body %}
+    <div>
+        <h1>Flight Company</h1>
+        {% if session.logged_in == null %}
+            <label>Please, Login or Register</label>
+            <form action="" method="POST">
+                <h3>Login</h3>
+                <div>
+                    <label>Real ID Number</label>
+                    <input type="text" name="real_id_login" required>
+                </div>
+                <div>
+                    <label>Password</label>
+                    <input type="password" name="login_password" required>
+                </div>
+                <input type="submit" name="login" value="Login">
+            </form>
+            <form action="" method="POST">
+                <h3>Register</h3>
+                <div>
+                    <label>Full Name</label>
+                    <input type="text" name="full_name" required>
+                </div>
+                <div>
+                    <label>Password</label>
+                    <input type="password" name="register_password" required>
+                </div>
+                <div>
+                    <label>Confirm Password</label>
+                    <input type="password" name="confirm_password" required>
+                </div>
+                <div>
+                    <label>Real ID Number</label>
+                    <input type="text" name="real_id_register" required>
+                </div>
+                <div>
+                    <input type="checkbox" name="id_admin" value="True">
+                    <label>Admin User?</label>
+                </div>
+                <input type="submit" name="register" value="Register">
+            </form>
+        {% endif %}
+    </div>
+{% endblock %}

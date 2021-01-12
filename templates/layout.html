@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head
+        <meta charset="utf-8">
+        <title>Flight Company</title>
+    </head>
+    <body>
+        <div style="text-align: center;">
+                {% for message in get_flashed_messages() %}
+                    {% if message %}
+                        {{ message }}
+                    {% endif %}
+                {% endfor %}
+            {% block body %}{% endblock %}
+        </div>
+    </body>
+</html>

@@ -1,0 +1,303 @@
+{% extends "layout.html" %}
+{% block body %}
+    <h2>Menu</h2>
+    <hr>
+    <h4>Get Tickets</h4>
+    <form action="" id="get-tickets-form" method="GET" onsubmit="return false">
+        <div>
+            <label>Get all tickets</label>
+            <input type="submit" onclick="formRequest('Tickets','','get-tickets-form','GET')" value="Get">
+        </div>
+    </form>
+    {% if show_tickets_table != null %}
+       <table style="margin-left: auto; margin-right: auto;">
+            {% if tickets != null %}
+            <tr>
+                <th>Ticket ID</th>
+                <th>User ID</th>
+                <th>Flight ID</th>
+            </tr>
+            {% endif %}
+            {% for ticket in tickets %}
+            <tr>
+                <td>{{ ticket.ticket_id }}</td>
+                <td>{{ ticket.user_id }}</td>
+                <td>{{ ticket.flight_id }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+    <hr>
+    {% if session.is_admin == false %}
+        <h4>Buy Tickets</h4>
+        <form action="" method="POST" id="post-ticket-id-form" onsubmit="return false">
+            <div>
+                <label>Flight ID</label>
+                <input type="text" name="flight_id" required>
+            </div>
+            <input type="submit" name="buy_ticket" value="Buy Ticket" id="submit_post" onclick="formRequest('Tickets','post','post-ticket-id-form','POST')">
+        </form>
+        <hr>
+    {% endif %}
+    <h4>Delete Tickets</h4>
+    <form action="" method="DELETE" id="delete-ticket-id-form" onsubmit="return false">
+        <div>
+            <label>Delete ticket by ID</label>
+            <input type="number" id="delete-ticket-id" required>
+            <input type="submit" onclick="formRequest('Tickets','delete-ticket-id','delete-ticket-id-form','DELETE')" value="Delete">
+        </div>
+    </form>
+    <hr>
+    <h4>Get Flights</h4>
+    <form action="" id="get-flights-form" method="GET" onsubmit="return false">
+        <div>
+            <label>Get all flights</label>
+            <input type="submit" onclick="formRequest('Flights','','get-flights-form','GET')" value="Get">
+        </div>
+    </form>
+    <form action="" method="GET" id="get-flight-id-form" onsubmit="return false">
+        <div>
+            <label>Get flight by ID</label>
+            <input type="number" id="get-flight-id" required>
+            <input type="submit" onclick="formRequest('Flights','get-flight-id','get-flight-id-form','GET')" value="Get">
+        </div>
+    </form>
+    <form action="" method="GET" id="get-flights-country-form" onsubmit="return false">
+        <div>
+            <label>Get flight by Country</label>
+            <input type="text" id="get-flights-country" required>
+            <input type="submit" onclick="formRequest('Flights','get-flights-country','get-flights-country-form','GET')" value="Get">
+        </div>
+    </form>
+    {% if show_flight_table != null %}
+       <table style="margin-left: auto; margin-right: auto;">
+            {% if flights != null %}
+            <tr>
+                <th>Flight ID</th>
+                <th>Date</th>
+                <th>Remaining Seats</th>
+                <th>Country Origin</th>
+                <th>Country Destination</th>
+            </tr>
+            {% endif %}
+            {% for flight in flights %}
+            <tr>
+                <td>{{ flight.flight_id }}</td>
+                <td>{{ flight.timestamp }}</td>
+                <td>{{ flight.remaining_seats }}</td>
+                <td>{{ flight.country_origin }}</td>
+                <td>{{ flight.country_dest }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+    <hr>
+{% if session.is_admin == true %}
+    <h4>Add Filghts</h4>
+    <form action="" method="POST" id="post-flight-id-form" onsubmit="return false">
+        <div>
+            <label>Origin Country</label>
+            <input type="text" name="origin_country" required>
+        </div>
+        <div>
+            <label>Destination Country</label>
+            <input type="text" name="dest_country" required>
+        </div>
+        <div>
+            <label>Date</label>
+            <input type="datetime-local" name="timestamp" required>
+        </div>
+        <div>
+            <label>Remaining Seats</label>
+            <input type="number" name="remaining_seats" required>
+        </div>
+        <input type="submit" name="add_flight" value="Add Flight" id="submit_post" onclick="formRequest('Flights','post','post-flight-id-form','POST')">
+    </form>
+    <hr>
+    <h4>Update Filghts</h4>
+    <form action="" method="PUT" id="put-flight-id-form" onsubmit="return false">
+        <div>
+            <label>Flight ID</label>
+            <input type="number" name="flight_id" id="put-flight-id" required>
+        </div>
+        <div>
+            <label>Origin Country</label>
+            <input type="text" name="origin_country">
+        </div>
+        <div>
+            <label>Destination Country</label>
+            <input type="text" name="dest_country">
+        </div>
+        <div>
+            <label>Date</label>
+            <input type="datetime-local" name="timestamp">
+        </div>
+        <div>
+            <label>Remaining Seats</label>
+            <input type="number" name="remaining_seats">
+        </div>
+        <input type="submit" name="update_flight" onclick="formRequest('Flights','put-flight-id','put-flight-id-form','PUT')" value="Update Flight">
+    </form>
+    <hr>
+    <h4>Delete Flights</h4>
+    <form action="" method="DELETE" id="delete-flight-id-form" onsubmit="return false">
+        <div>
+            <label>Delete Flight by ID</label>
+            <input type="number" id="delete-flight-id" required>
+            <input type="submit" onclick="formRequest('Flights','delete-flight-id','delete-flight-id-form','DELETE')" value="Delete">
+        </div>
+    </form>
+    <hr>
+    <h4>Get Users</h4>
+    <form action="" id="get-users-form" method="GET" onsubmit="return false">
+        <div>
+            <label>Get all users</label>
+            <input type="submit" onclick="formRequest('Users','','get-users-form','GET')" value="Get">
+        </div>
+    </form>
+    <form action="" method="GET" id="get-users-id-form" onsubmit="return false">
+        <div>
+            <label>Get user by ID</label>
+            <input type="number" id="get-users-id" required>
+            <input type="submit" onclick="formRequest('Users','get-users-id','get-users-id-form','GET')" value="Get">
+        </div>
+    </form>
+    {% if show_users_table != null %}
+       <table style="margin-left: auto; margin-right: auto;">
+            {% if users != null %}
+            <tr>
+                <th>User ID</th>
+                <th>Full Name</th>
+                <th>Real ID Number</th>
+            </tr>
+            {% endif %}
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id_ai }}</td>
+                <td>{{ user.full_name }}</td>
+                <td>{{ user.real_id }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+    <hr>
+    <h4>Update Users</h4>
+    <form action="" method="PUT" id="put-users-id-form" onsubmit="return false">
+        <div>
+            <label>User ID</label>
+            <input type="number" name="id_ai" id="put-users-id" required>
+        </div>
+        <div>
+            <label>Full Name</label>
+            <input type="text" name="full_name">
+        </div>
+        <div>
+            <label>Password</label>
+            <input type="password" name="new_password">
+        </div>
+        <div>
+            <label>Confirm Password</label>
+            <input type="password" name="confirm_password">
+        </div>
+        <div>
+            <label>Real ID Number</label>
+            <input type="number" name="real_id">
+        </div>
+        <input type="submit" name="update_user" onclick="formRequest('Users','put-users-id','put-users-id-form','PUT')" value="Update User">
+    </form>
+    <hr>
+    <h4>Delete Users</h4>
+    <form action="" method="DELETE" id="delete-user-id-form" onsubmit="return false">
+        <div>
+            <label>Delete Flight by ID</label>
+            <input type="number" id="delete-user-id" required>
+            <input type="submit" onclick="formRequest('Users','delete-user-id','delete-user-id-form','DELETE')" value="Delete">
+        </div>
+    </form>
+    <hr>
+    <h4>Get Countries</h4>
+    <form action="" id="get-countries-form" method="GET" onsubmit="return false">
+        <div>
+            <label>Get all countries</label>
+            <input type="submit" onclick="formRequest('Countries','','get-countries-form','GET')" value="Get">
+        </div>
+    </form>
+    <form action="" method="GET" id="get-countries-id-form" onsubmit="return false">
+        <div>
+            <label>Get user by ID</label>
+            <input type="number" id="get-countries-id" required>
+            <input type="submit" onclick="formRequest('Countries','get-countries-id','get-countries-id-form','GET')" value="Get">
+        </div>
+    </form>
+    {% if show_countries_table != null %}
+       <table style="margin-left: auto; margin-right: auto;">
+            {% if countries != null %}
+            <tr>
+                <th>Country ID</th>
+                <th>Name</th>
+            </tr>
+            {% endif %}
+            {% for country in countries %}
+            <tr>
+                <td>{{ country.code_ai }}</td>
+                <td>{{ country.name }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+    <hr>
+    <h4>Add Countries</h4>
+    <form action="" method="POST" id="post-country-id-form" onsubmit="return false">
+        <div>
+            <label>Origin Country</label>
+            <input type="text" name="country_name" required>
+        </div>
+        <input type="submit" name="add_country" value="Add Country" id="submit_post" onclick="formRequest('Countries','post','post-country-id-form','POST')">
+    </form>
+    <hr>
+    <h4>Delete Countries</h4>
+    <form action="" method="DELETE" id="delete-user-id-form" onsubmit="return false">
+        <div>
+            <label>Delete Flight by ID</label>
+            <input type="number" id="delete-user-id" required>
+            <input type="submit" onclick="formRequest('Users','delete-user-id','delete-user-id-form','DELETE')" value="Delete">
+        </div>
+    </form>
+    <hr>
+{% endif %}
+     <form action="" method="POST">
+        <div>
+            <label>Logout Session</label>
+        </div>
+        <input type="submit" name="logout" value="Logout">
+    </form> 
+    <hr>
+
+    <script>
+        function formRequest(funcURL,inputText,formURL,methodAction) {
+            var formSubmit = document.getElementById(formURL)
+            var htmlBody = document.getElementsByTagName('body')[0]
+            if (inputText != "") {
+                var redirectURL = (inputText != 'post') ? document.getElementById(inputText).value : null
+                var jsonObject = {}
+                var formData = new FormData(formSubmit)
+                formData.forEach((value, key) => jsonObject[key] = value)
+                var options = {method: methodAction, headers:{"Content-Type": "application/json"}}
+                var options = (methodAction != 'GET') ? Object.assign({}, options, {body: JSON.stringify(jsonObject)}) : options
+                if (inputText != 'post') {
+                    fetch(`${window.origin}/${funcURL}/${redirectURL}`, options)
+                    .then(res => res.text())
+                    .then(html => htmlBody.innerHTML = html)
+                } else {
+                    fetch(`${window.origin}/${funcURL}`, options)
+                    .then(res => res.text())
+                    .then(html => htmlBody.innerHTML = html)
+                }
+            } else {
+                fetch(`${window.origin}/${funcURL}`)
+                .then(res => res.text())
+                .then(html => htmlBody.innerHTML = html)
+            }
+        }
+    </script>
+{% endblock %}
