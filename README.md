@@ -1,5 +1,5 @@
 
-## Flight Comapny REST project using python Flask for server side, HTML with Jinj for client side and PostgreSQL for database 
+## Flight Comapny REST project using python Flask for server side, HTML with Jinja2 for client side and PostgreSQL for database 
 
 ### Project Summary
 The project contain a main app.py file that starts the Flask server and has all the main functions and requests.
