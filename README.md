@@ -58,5 +58,24 @@ or
     If all the was filled correctly a user will be created to use in the login option.
 - After a successful login the user will be redirected to the menu page.
 - The menu page have to showing option one for normal user and one for admin user
-- Normal user menu page:
-  - In this page the user has the following options
+- Normal user menu page has the following options:
+  - Getting the the tickets the user bought
+  - Buying tickets by a flight id of the flight the user wants
+  - Deleting tickets by the user's tickets id
+  - Getting all available flights, flight by id or flight by country
+  - Logout from the user current session
+- Normal user menu page has the following options:
+  - Getting all tickets bought by all the users
+  - Deleting tickets from different users
+  - Getting all available flights, flight by id or flight by country
+  - Adding new flights to company database
+  - Updating current company flights
+  - Deleting flights from company
+  - Getting all countries, or country by id
+  - Adding new countries to company
+  - Deleting countries from company
+  - Getting all users, or user by id
+  - Updating users in the company (normal users and admin users)
+  - Deleting users from company
+   - Logout from the user current session
+  
