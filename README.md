@@ -50,7 +50,7 @@ or
 
 > python3 app.py
 
-#### Connecting the web server
+#### Connecting to the server from the client
 - When the server starts browse to the following URL: http://127.0.0.1:5000/
 - On home page of the project you will have two option: Login or Register
   - Login - In the login option the user can enter his real id number and password and if correct he will be redirected to the menu page of the project
