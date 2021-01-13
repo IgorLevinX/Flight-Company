@@ -19,11 +19,11 @@ The client side for the project is located in the templates folder with the thre
 - PostgreSQL
 
 #### Install Python 3 packages:
->$ pip install psycopg2-binary psycopg2 flask passlib
+> pip install psycopg2-binary psycopg2 flask passlib
 
 or
 
->$ pip3 install psycopg2-binary psycopg2 flask passlib
+> pip3 install psycopg2-binary psycopg2 flask passlib
 
 
 ### App Instructions
@@ -44,11 +44,11 @@ For the app.py to connect to the database it uses a configuration file with the 
 
 #### Strating the app
 Open the command line and start the app using python form the project directory:
->$ python app.py
+> python app.py
 
 or
 
->$ python3 app.py
+> python3 app.py
 
 #### Using the app
 - When the server starts browse to the following URL: http://127.0.0.1:5000/
