@@ -43,7 +43,7 @@ For the app.py to connect to the database it uses a configuration file with the 
 - database - database name to connect (flight_company in this project)
 
 #### Strating the app
-Open the command line of each OS and start the app using python form the project directory:
+Open the command line and start the app using python form the project directory:
 >$ python app.py
 
 or
