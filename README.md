@@ -1,4 +1,4 @@
-## Flight Comapny REST Project
+## Flight Company REST Project
 
 ### Project Summary
 The project contain a main app.py file that starts the Flask server and has all the main functions and requests.
