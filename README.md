@@ -7,44 +7,15 @@ There is also function_utils files that contain extra functions for the app.py f
 Before starting the server you need to create the database and therefore there is the sql script file and the credentials file for connection
 Also there are the template folder with the three HTML files with Jinj2 inside of it for functionallity and integration with the python files.
 
-### App Tested with Ubuntu, Debian and Windows 10 Pro
+### Prequisites for project
 
-#### Install Docker on ubuntu:
-https://docs.docker.com/engine/install/ubuntu/
+## Install the following programs:
+- Python 3
+- Pip 3
+- PostgreSQL
 
-#### Install Docker on Debian:
-https://docs.docker.com/engine/install/debian/
-
-#### Install Docker on Windows 10 Pro with Docker Desktop:
-https://docs.docker.com/docker-for-windows/install/
-
-#### Install Python3 on Ubuntu and Debian:
->$ sudo apt-get update
->$ sudo apt-get install python3 python3-pip python3-tk
-
-#### Install Python3 on Windows 10 Pro:
-Download the Python3 installer from the official python site:
-
-https://www.python.org/downloads/
-
-While installing choose to install pip and all optional features.
-
-#### Checking python3 and docker installtions:
-Open the command line of each OS:
->$ docker version (On Ubuntu, Debian and Windows)
-
->$ python --version (On Windows)
-
->$ python3 --version (On Ubuntu, Debian)
-
-#### Install Docker SDK for Python3:
-Installing docker sdk for python3 is done by the python pip package installer for python.
-Checking if pip3 installed:
->$ pip3 --version
-
-Installing the docker sdk:
-
->$ pip3 install docker
+## Install Python 3 packages:
+pip install psycopg2-binary psycopg2 flask passlib
 
 ### App Instructions
 #### Strating the app
