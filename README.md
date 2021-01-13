@@ -42,7 +42,7 @@ For the app.py to connect to the database it uses a configuration file with the 
 - port - The port the database listening to (Default 5432 or 5433)
 - database - database name to connect (flight_company in this project)
 
-#### Strating the app
+#### Strating the web server
 Open the command line and start the app using python from the project directory:
 >python app.py
 
@@ -50,7 +50,7 @@ or
 
 > python3 app.py
 
-#### Using the app
+#### Connecting the web server
 - When the server starts browse to the following URL: http://127.0.0.1:5000/
 - On home page of the project you will have two option: Login or Register
   - Login - In the login option the user can enter his real id number and password and if correct he will be redirected to the menu page of the project
