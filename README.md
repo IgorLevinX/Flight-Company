@@ -19,11 +19,11 @@ The client side for the project is located in the templates folder with the thre
 - PostgreSQL
 
 #### Install Python 3 packages:
-> pip install psycopg2-binary psycopg2 flask passlib
+>pip install psycopg2-binary psycopg2 flask passlib
 
 or
 
-> pip3 install psycopg2-binary psycopg2 flask passlib
+>pip3 install psycopg2-binary psycopg2 flask passlib
 
 
 ### App Instructions
@@ -31,7 +31,7 @@ or
 #### Importing the sql script
 To import the sql import enter the PostgreSQL with an admin user
 One way to import is to run the following command from the PostgreSQL command line:
-> \i flight_company.sql
+>\i flight_company.sql
 
 #### Configuring the database.ini credentials file
 For the app.py to connect to the database it uses a configuration file with the credentials for the connection:
@@ -44,7 +44,7 @@ For the app.py to connect to the database it uses a configuration file with the 
 
 #### Strating the app
 Open the command line and start the app using python form the project directory:
-> python app.py
+>python app.py
 
 or
 
