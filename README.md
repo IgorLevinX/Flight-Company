@@ -1,13 +1,15 @@
-
 ## Flight Comapny REST project
-
-### Flight Comapny REST project using python Flask for server side, HTML with Jinja2 for client side and PostgreSQL for database 
 
 ### Project Summary
 The project contain a main app.py file that starts the Flask server and has all the main functions and requests.
 There is also function_utils files that contain extra functions for the app.py file.
-Before starting the server you need to create the database and therefore there is the sql script file and the credentials file for connection
-Also there are the template folder with the three HTML files with Jinj2 inside of it for functionallity and integration with the python files.
+Before starting the server you need to create the database for it and therefore you can run the sql script file and the app.py will use the credentials file for connection.
+The client side for the project is located in the templates folder with the three HTML files with Jinja2 inside of it for functionallity and integration with the python files.
+
+### Project Components
+- Python Flask for server side
+- HTML with Jinja2 for client side
+- PostgreSQL for database
 
 ### Prequisites for project
 
