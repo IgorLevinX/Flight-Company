@@ -15,7 +15,9 @@ Also there are the template folder with the three HTML files with Jinj2 inside o
 - PostgreSQL
 
 #### Install Python 3 packages:
-pip install psycopg2-binary psycopg2 flask passlib
+>$ pip install psycopg2-binary psycopg2 flask passlib
+or
+>$ pip3 install psycopg2-binary psycopg2 flask passlib
 
 ### App Instructions
 #### Strating the app
