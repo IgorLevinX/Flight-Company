@@ -27,6 +27,21 @@ or
 
 
 ### App Instructions
+
+#### Importing the sql script
+To import the sql import enter the PostgreSQL with an admin user
+One way to import is to run the following command from the PostgreSQL command line:
+>$ \i flight_company.sql
+
+#### Configuring the database.ini credentials file
+For the app.py to connect to the database it uses a configuration file with the credentials for the connection:
+
+- user - The username with the permission to read and write to the database
+- password - The user password to connect to the database
+- host - The IP or Hostname of the server to coonect (Default 127.0.0.1 for the local host)
+- port - The port the database listening to (Default 5432 or 5433)
+- database - database name to connect (flight_company in this project)
+
 #### Strating the app
 Open the command line of each OS and start the app using python form the project directory:
 >$ python app.py
