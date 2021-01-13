@@ -59,4 +59,5 @@ or
 - After a successful login the user will be redirected to the menu page.
 - The menu page have to showing option one for normal user and one for admin user
 - Normal user menu page:
-  - In this page the user has the follwoing options
+  - In this page the user has the following options:
+    - 
