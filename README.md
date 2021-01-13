@@ -17,11 +17,19 @@ Also there are the template folder with the three HTML files with Jinj2 inside o
 #### Install Python 3 packages:
 >$ pip install psycopg2-binary psycopg2 flask passlib
 
+or
+
+>$ pip3 install psycopg2-binary psycopg2 flask passlib
+
 
 ### App Instructions
 #### Strating the app
 Open the command line of each OS and start the app using python form the project directory:
->$ python app..py
+>$ python app.py
+
+or
+
+>$ python3 app.py
 
 #### Using the app
 The app has for text boxes to enter the following informtaion in the next format:
