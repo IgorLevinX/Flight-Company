@@ -77,5 +77,5 @@ or
   - Getting all users, or user by id
   - Updating users in the company (normal users and admin users)
   - Deleting users from company
-   - Logout from the user current session
+  - Logout from the user current session
   
