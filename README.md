@@ -9,12 +9,12 @@ Also there are the template folder with the three HTML files with Jinj2 inside o
 
 ### Prequisites for project
 
-## Install the following programs:
+#### Install the following programs:
 - Python 3
 - Pip 3
 - PostgreSQL
 
-## Install Python 3 packages:
+#### Install Python 3 packages:
 pip install psycopg2-binary psycopg2 flask passlib
 
 ### App Instructions
