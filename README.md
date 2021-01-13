@@ -31,7 +31,7 @@ or
 #### Importing the sql script
 To import the sql import enter the PostgreSQL with an admin user
 One way to import is to run the following command from the PostgreSQL command line:
->$ \i flight_company.sql
+> \i flight_company.sql
 
 #### Configuring the database.ini credentials file
 For the app.py to connect to the database it uses a configuration file with the credentials for the connection:
